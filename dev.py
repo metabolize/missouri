@@ -35,13 +35,18 @@ def test():
 
 @cli.command()
 def coverage():
-    execute("pytest --cov=vg")
+    execute("pytest --cov=missouri")
 
 
 @cli.command()
 def coverage_report():
     execute("coverage html")
     execute("open htmlcov/index.html")
+
+
+@cli.command()
+def check_types():
+    execute("mypy", "--package", "missouri", "--show-error-codes")
 
 
 @cli.command()
