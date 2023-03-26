@@ -108,17 +108,19 @@ class JSONDecoder(MethodListCaller):
     Instances may be passed to simplejson as object_hook to decode json objects.
     The decoders will be called in order. The first one to return something other
     than None wins. The decoders will be given a dict to parse, something like:
-
-        {
-            "__ndarray__": [
-                    [859.0, 859.0],
-                    [217.0, 106.0],
-                    [302.0, 140.0]
-                ],
-            "dtype": "float32",
-            "shape": [3, 2]
-        }
-
+    
+    ```
+    {
+        "__ndarray__": [
+            [859.0, 859.0],
+            [217.0, 106.0],
+            [302.0, 140.0]
+        ],
+        "dtype": "float32",
+        "shape": [3, 2]
+    }
+    ```
+    
     Note that for object_hook, if we want to do nothing, we return the dict unchanged
     and the json is decoded as a plain old dict; this behavior is the default of
     MethodListCaller.
@@ -146,15 +148,15 @@ class JSONEncoder(MethodListCaller):
     than None wins. The encoders will be given an object to encore and should return
     a dict, something like:
 
-        {
-            "__ndarray__": [
-                    [859.0, 859.0],
-                    [217.0, 106.0],
-                    [302.0, 140.0]
-                ],
-            "dtype": "float32",
-            "shape": [3, 2]
-        }
+    :     {
+    :         "__ndarray__": [
+    :             [859.0, 859.0],
+    :             [217.0, 106.0],
+    :             [302.0, 140.0]
+    :         ],
+    :         "dtype": "float32",
+    :         "shape": [3, 2]
+    :     }
 
     Note that for default, if we want to do nothing, we return None and the object
     is encoded as best as simplejson can (which is often by throwing a TypeError).
@@ -176,5 +178,5 @@ class JSONEncoder(MethodListCaller):
         """
         pass
 
-    def encode_numpy(self, obj: np.ndarray) -> t.Optional[JsonType]:
+    def encode_numpy(self, obj: "np.ndarray") -> t.Optional[JsonType]:
         return _encode_numpy(obj, as_primitives=self.encode_as_primitives)
