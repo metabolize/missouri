@@ -3,7 +3,7 @@ from contextlib import contextmanager
 from typing import TYPE_CHECKING
 
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from _typeshed import FileDescriptorOrPath
 
 
