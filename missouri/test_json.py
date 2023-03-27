@@ -2,7 +2,7 @@
 # https://github.com/metabolize-forks/baiji-serialization/tree/8b77f19685555e1bab03e75a433d00ce6fa4bea5
 # Apache 2.0
 
-from . import json
+from missouri import json
 
 
 def test_json_dumps() -> None:
