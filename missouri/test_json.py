@@ -234,7 +234,7 @@ def test_json_load_raises_expected_error_when_numpy_is_not_installed(monkeypatch
         ImportError, match=r"JSON file contains numpy arrays; install numpy to load it"
     ):
         json.loads(
-            r'{"foo": {"__ndarray__": [[859.0, 859.0], [217.0, 106.0], [302.0, 140.0]], "dtype": "float32", "shape": [3, 2]}}'
+            r'{"foo": {"__ndarray__": [[859.0, 859.0], [217.0, 106.0], [302.0, 140.0]], "dtype": "float32", "shape": [3, 2]}}'  # noqa: E501
         )
 
 
