@@ -200,7 +200,7 @@ def test_json_load_object_hook_kwarg_raises_expected_error():
         ValueError,
         match=r"Instead of explicitly setting object_hook, subclass missouri.coding.JSONDecoder and pass it as decoder",
     ):
-        json.load("test_example.json", object_hook=dict())
+        json.loads('{"foo":"data"}', object_hook=dict())
 
 
 def test_json_dump_unknown_object_raises_expected():
