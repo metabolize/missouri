@@ -1,9 +1,8 @@
 import typing as t
 from contextlib import contextmanager
-from typing import TYPE_CHECKING
 
 
-if TYPE_CHECKING:  # pragma: no cover
+if t.TYPE_CHECKING:  # pragma: no cover
     from _typeshed import FileDescriptorOrPath
 
 
