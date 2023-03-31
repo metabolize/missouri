@@ -6,6 +6,7 @@ if t.TYPE_CHECKING:  # pragma: no cover
     try:
         import numpy as np
     except ImportError:
+        # This might generate type errors, but that is okay.
         pass
 
 
