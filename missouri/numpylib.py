@@ -26,7 +26,7 @@ def encode_numpy(obj: t.Any, as_primitives: bool) -> JsonType:
                 "dtype": obj.dtype.name,
                 "shape": obj.shape,
             }
-    elif isinstance(obj, (np.bool8, np.bool_)):
+    elif isinstance(obj, np.bool_):
         return bool(obj)
     elif isinstance(
         obj,
