@@ -2,7 +2,7 @@
 
 [![version](https://img.shields.io/pypi/v/missouri?style=flat-square)][pypi]
 [![python version](https://img.shields.io/pypi/pyversions/missouri?style=flat-square)][pypi]
-[![license](https://img.shields.io/pypi/missouri/vg?style=flat-square)][pypi]
+[![license](https://img.shields.io/pypi/l/missouri?style=flat-square)][pypi]
 [![](https://img.shields.io/badge/coverage-100%25-brightgreen?style=flat-square)][coverage]
 ![types](https://img.shields.io/badge/types-mypy-brithgreen?style=flat-square)
 
