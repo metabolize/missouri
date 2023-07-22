@@ -3,14 +3,15 @@ from contextlib import contextmanager
 
 
 if t.TYPE_CHECKING:  # pragma: no cover
-    from _typeshed import FileDescriptorOrPath
+    from _typeshed import FileDescriptorOrPath, SupportsRead, SupportsWrite
 
-FileLike = t.Union["FileDescriptorOrPath", t.IO[str]]
+Readable = t.Union["FileDescriptorOrPath", "SupportsRead[str]"]
+Writable = t.Union["FileDescriptorOrPath", "SupportsWrite[str]"]
 
 
 @contextmanager
 def ensure_text_file_open(
-    path_or_fp: t.Union["FileDescriptorOrPath", t.IO[str]], mode: t.Literal["r", "w"]
+    path_or_fp: t.Union[Readable, Writable], mode: t.Literal["r", "w"]
 ) -> t.Generator[t.IO[str], None, None]:
     import io
 

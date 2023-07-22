@@ -5,7 +5,7 @@
 import typing as t
 import simplejson as json
 from .coding import JSONDecoder, JSONEncoder
-from .openlib import FileLike, ensure_text_file_open
+from .openlib import Readable, Writable, ensure_text_file_open
 
 
 def _dump_args(kwargs: dict) -> dict:
@@ -26,7 +26,7 @@ def _dump_args(kwargs: dict) -> dict:
     return kwargs
 
 
-def dump(obj: t.Any, path: FileLike, *args: object, **kwargs: object) -> None:
+def dump(obj: t.Any, path: Writable, *args: object, **kwargs: object) -> None:
     with ensure_text_file_open(path, "w") as f:
         json.dump(obj, f, *args, **_dump_args(kwargs))
 
@@ -48,7 +48,7 @@ def _load_args(kwargs: dict) -> dict:
     return kwargs
 
 
-def load(path: FileLike, *args: object, **kwargs: object) -> t.Any:
+def load(path: Readable, *args: object, **kwargs: object) -> t.Any:
     with ensure_text_file_open(path, "r") as f:
         return json.load(f, *args, **_load_args(kwargs))
 
