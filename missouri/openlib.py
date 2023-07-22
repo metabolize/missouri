@@ -5,6 +5,7 @@ from contextlib import contextmanager
 if t.TYPE_CHECKING:  # pragma: no cover
     from _typeshed import FileDescriptorOrPath
 
+FileLike = t.Union["FileDescriptorOrPath", t.IO[str]]
 
 @contextmanager
 def ensure_text_file_open(
