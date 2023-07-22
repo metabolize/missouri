@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "missouri"
-version = "0.2.0"
+version = "0.3.0"
 description = "Read and write JSON in one line"
 authors = ["Paul Melnikow <github@paulmelnikow.com>", "Body Labs, Metabolize, and other contributors"]
 license = "Apache-2.0"
