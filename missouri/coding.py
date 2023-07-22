@@ -3,7 +3,6 @@
 # Apache 2.0
 
 import typing as t
-from .common_types import JsonType
 from .numpylib import decode_numpy as _decode_numpy, encode_numpy as _encode_numpy
 
 if t.TYPE_CHECKING:  # pragma: no cover
@@ -28,7 +27,7 @@ class MethodListCaller:
         # be defensive if someone forgets to call super pylint: disable=attribute-defined-outside-init
         self.method_list = []
 
-    def __call__(self, obj: t.Any) -> t.Optional[JsonType]:
+    def __call__(self, obj: t.Any) -> t.Any:
         """
         Call the methods in method_list until one of them returns something other than None
         and return that as the result of the call.
@@ -40,7 +39,7 @@ class MethodListCaller:
         except StopIteration:
             return self.default(obj)
 
-    def default(self, x: t.Any) -> t.Optional[JsonType]:
+    def default(self, x: t.Any) -> t.Any:
         """
         If none of the methods returned something, then return this default
         """
@@ -78,17 +77,17 @@ class JSONEncoder(MethodListCaller):
         self.register(self.encode)
         self.register(self.encode_numpy)
 
-    def default(self, obj: t.Any) -> t.Optional[JsonType]:
+    def default(self, obj: t.Any) -> t.Any:
         raise ValueError(f"Object of type {type(obj)} is not JSON-serializable")
 
-    def encode(self, obj: t.Any) -> t.Optional[JsonType]:
+    def encode(self, obj: t.Any) -> t.Any:
         """
         In a subclass, either override this or add some encode functions and
         override __init__ to register them.
         """
         pass
 
-    def encode_numpy(self, obj: "np.ndarray") -> t.Optional[JsonType]:
+    def encode_numpy(self, obj: "np.ndarray") -> t.Any:
         return _encode_numpy(obj, as_primitives=self.encode_as_primitives)
 
 
@@ -119,12 +118,12 @@ class JSONDecoder(MethodListCaller):
         self.register(self.decode)
         self.register(self.decode_numpy)
 
-    def decode(self, obj: JsonType) -> t.Optional[JsonType]:
+    def decode(self, obj: t.Any) -> t.Any:
         """
         In a subclass, either override this or add some decode functions and
         override __init__ to register them
         """
         pass
 
-    def decode_numpy(self, obj: JsonType) -> t.Optional["np.ndarray"]:
+    def decode_numpy(self, obj: t.Any) -> t.Optional["np.ndarray"]:
         return _decode_numpy(obj)
