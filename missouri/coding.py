@@ -118,7 +118,7 @@ class JSONDecoder(MethodListCaller):
         self.register(self.decode)
         self.register(self.decode_numpy)
 
-    def decode(self, obj: JsonType) -> t.Any:
+    def decode(self, obj: t.Any) -> t.Any:
         """
         In a subclass, either override this or add some decode functions and
         override __init__ to register them
