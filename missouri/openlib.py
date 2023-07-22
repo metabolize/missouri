@@ -5,8 +5,8 @@ from contextlib import contextmanager
 if t.TYPE_CHECKING:  # pragma: no cover
     from _typeshed import FileDescriptorOrPath, SupportsRead, SupportsWrite
 
-Readable = t.Union["FileDescriptorOrPath", SupportsRead[str]]
-Writable = t.Union["FileDescriptorOrPath", SupportsWrite[str]]
+Readable = t.Union["FileDescriptorOrPath", "SupportsRead[str]"]
+Writable = t.Union["FileDescriptorOrPath", "SupportsWrite[str]"]
 
 
 @contextmanager
