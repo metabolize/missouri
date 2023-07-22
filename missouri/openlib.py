@@ -7,6 +7,7 @@ if t.TYPE_CHECKING:  # pragma: no cover
 
 FileLike = t.Union["FileDescriptorOrPath", t.IO[str]]
 
+
 @contextmanager
 def ensure_text_file_open(
     path_or_fp: t.Union["FileDescriptorOrPath", t.IO[str]], mode: t.Literal["r", "w"]

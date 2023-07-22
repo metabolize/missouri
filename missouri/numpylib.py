@@ -1,7 +1,5 @@
 import typing as t
 
-from .common_types import JsonType
-
 if t.TYPE_CHECKING:  # pragma: no cover
     try:
         import numpy as np
@@ -10,7 +8,7 @@ if t.TYPE_CHECKING:  # pragma: no cover
         pass
 
 
-def encode_numpy(obj: t.Any, as_primitives: bool) -> JsonType:
+def encode_numpy(obj: t.Any, as_primitives: bool) -> t.Any:
     try:
         import numpy as np
     except ImportError:
