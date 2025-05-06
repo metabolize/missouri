@@ -9,7 +9,7 @@ on:
 
 jobs:
   main:
-    name: Build and Test
+    name: Main
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
 
