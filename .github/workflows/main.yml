@@ -1,4 +1,4 @@
-name: CI
+name: Python CI
 
 on:
   push:
@@ -8,60 +8,137 @@ on:
     - cron: '0 17 * * *'
 
 jobs:
-  main:
-    name: Main
+  check_code_format:
+    name: Check Code Format
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-
     - name: Set up Python 3.9
       uses: actions/setup-python@v5
       with:
         python-version: '3.9'
-
     - name: Install Poetry
       uses: abatilo/actions-poetry@v4
       with:
         poetry-version: 1.2.2
-
     - uses: actions/cache@v3
-      name: Define a cache for the virtual environment based on the dependencies lock file
+      name: Define a cache for the virtual environment
       with:
         path: .venv
-        key: venv-${{ hashFiles('poetry.lock') }}
-
+        key: venv-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+        restore-keys: |
+          venv-${{ runner.os }}-
     - name: Create the in-project virtualenv
       run: test -d .venv || python -m venv .venv
-
     - name: Install dependencies
       run: |
         poetry --version
         poetry install --no-ansi --no-interaction
         poetry show
+    - name: Check code format
+      run: ./dev.py black-check
 
+  check_lint:
+    name: Check Lint
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+    - name: Install Poetry
+      uses: abatilo/actions-poetry@v4
+      with:
+        poetry-version: 1.2.2
+    - uses: actions/cache@v3
+      name: Define a cache for the virtual environment
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+        restore-keys: |
+          venv-${{ runner.os }}-
+    - name: Create the in-project virtualenv
+      run: test -d .venv || python -m venv .venv
+    - name: Install dependencies
+      run: |
+        poetry --version
+        poetry install --no-ansi --no-interaction
+        poetry show
+    - name: Check lint
+      run: ./dev.py lint
+
+  run_tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+    - name: Install Poetry
+      uses: abatilo/actions-poetry@v4
+      with:
+        poetry-version: 1.2.2
+    - uses: actions/cache@v3
+      name: Define a cache for the virtual environment
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+        restore-keys: |
+          venv-${{ runner.os }}-
+    - name: Create the in-project virtualenv
+      run: test -d .venv || python -m venv .venv
+    - name: Install dependencies
+      run: |
+        poetry --version
+        poetry install --no-ansi --no-interaction
+        poetry show
     - name: Run tests
-      if: always()
       run: ./dev.py coverage
 
+  build_and_upload:
+    name: Build and Upload
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+    - name: Install Poetry
+      uses: abatilo/actions-poetry@v4
+      with:
+        poetry-version: 1.2.2
+    - uses: actions/cache@v3
+      name: Define a cache for the virtual environment
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+        restore-keys: |
+          venv-${{ runner.os }}-
+    - name: Create the in-project virtualenv
+      run: test -d .venv || python -m venv .venv
+    - name: Install dependencies
+      run: |
+        poetry --version
+        poetry install --no-ansi --no-interaction
+        poetry show
     - name: Run the doc build
       if: always()
       run: ./dev.py doc
-
-    - name: Check lint
-      if: always()
-      run: ./dev.py lint
-
-    - name: Check code format
-      if: always()
-      run: ./dev.py black-check
-
     - name: Check that the build completes
       if: always()
       run: poetry build
-
     - name: Upload distributable
       if: always()
       uses: actions/upload-artifact@v4
