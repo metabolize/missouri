@@ -2,11 +2,20 @@ name: Prepare environment
 runs:
   using: "composite"
 
+inputs:
+  python_version:
+    required: false
+    default: '3.9'
+  poetry_version:
+    required: false
+    default: '1.2.2'
+
   steps:
     - name: Set up Python ${{ inputs.python_version }}
       uses: actions/setup-python@v5
       with:
         python-version: ${{ inputs.python_version }}
+
     - name: Install Poetry ${{ inputs.poetry_version }}
       uses: abatilo/actions-poetry@v4
       with:
@@ -20,11 +29,11 @@ runs:
         restore-keys: |
           venv-${{ runner.os }}-${{ inputs.python_version }}-
 
-    - name: Create the in-project virtualenv
+    - name: Create the in-project virtualenv if it doesn't exist
       shell: bash
       run: test -d .venv || python -m venv .venv
 
-    - name: Install dependencies
+    - name: Install dependencies using Poetry
       shell: bash
       run: |
         poetry --version
