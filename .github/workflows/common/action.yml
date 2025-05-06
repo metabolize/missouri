@@ -1,0 +1,49 @@
+name: Prepare environment
+runs:
+  using: "composite"
+
+  steps:
+    - name: Set up Python ${{ inputs.python_version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python_version }}
+    - name: Install Poetry ${{ inputs.poetry_version }}
+      uses: abatilo/actions-poetry@v4
+      with:
+        poetry-version: ${{ inputs.poetry_version }}
+
+    - name: Define a cache for the virtual environment
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ inputs.python_version }}-${{ hashFiles('poetry.lock') }}
+        restore-keys: |
+          venv-${{ runner.os }}-${{ inputs.python_version }}-
+
+    - name: Create the in-project virtualenv
+      run: test -d .venv || python -m venv .venv
+
+    - name: Install dependencies
+      run: |
+        poetry --version
+        poetry install --no-ansi --no-interaction
+        poetry show
+
+    # - name: Execute main task command
+    #   if: ${{ inputs.run_command }}
+    #   run: poetry run ${{ inputs.run_command }}
+
+    # - name: Run the doc build
+    #   if: ${{ inputs.run_doc_build_command }}
+    #   run: poetry run ${{ inputs.run_doc_build_command }}
+
+    # - name: Run Poetry build
+    #   if: ${{ inputs.run_poetry_build_command }}
+    #   run: poetry ${{ inputs.run_poetry_build_command }}
+
+    # - name: Upload distributable
+    #   if: ${{ inputs.upload_artifact_path }}
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: ${{ inputs.upload_artifact_name }}
+    #     path: ${{ inputs.upload_artifact_path }}
