@@ -1,0 +1,61 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - '**'
+  schedule:
+    - cron: '0 17 * * *'
+
+jobs:
+  build_and_test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    # This condition ensures the scheduled job only runs on the 'main' branch.
+    # For push events, it runs on any branch pushed to.
+    if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.9 with Poetry caching
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+        cache: 'poetry'
+
+    - name: Install Poetry and dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry==1.2.2
+        poetry --version
+        poetry install --no-ansi --no-interaction
+        poetry show
+
+    - name: Run tests
+      if: always()
+      run: ./dev.py coverage
+
+    - name: Run the doc build
+      if: always()
+      run: ./dev.py doc
+
+    - name: Check lint
+      if: always()
+      run: ./dev.py lint
+
+    - name: Check code format
+      if: always()
+      run: ./dev.py black-check
+
+    - name: Check that the build completes
+      if: always()
+      run: poetry build
+
+    - name: Upload distributable
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-artifacts
+        path: dist/
