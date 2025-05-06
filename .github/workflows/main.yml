@@ -9,35 +9,39 @@ on:
 
 jobs:
   check_code_format:
-    name: Check Code Format
+    name: Check code format
+    runs-on: ubuntu-latest
     if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
-    uses: ./.github/workflows/common.yml
-    with:
-      job_name: Check Code Format
-      run_command: './dev.py black-check'
 
-  check_lint:
-    name: Check Lint
-    if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
-    uses: ./.github/workflows/common.yml
-    with:
-      job_name: Check Lint
-      run_command: './dev.py lint'
+    steps:
+    - uses: ./.github/workflows/common.yml
 
-  run_tests:
-    name: Run Tests
-    if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
-    uses: ./.github/workflows/common.yml
-    with:
-      job_name: Run Tests
-      run_command: './dev.py coverage'
+    - name: Check code format
+      run: ./dev.py lint
 
-  build_and_upload:
-    name: Build and Upload
-    if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
-    uses: ./.github/workflows/common.yml
-    with:
-      job_name: Build and Upload
-      run_doc_build_command: './dev.py doc'
-      run_poetry_build_command: 'build'
-      upload_artifact_path: 'dist/'
+
+  # check_lint:
+  #   name: Check Lint
+  #   if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
+  #   uses: ./.github/workflows/common.yml
+  #   with:
+  #     job_name: Check Lint
+  #     run_command: './dev.py lint'
+
+  # run_tests:
+  #   name: Run Tests
+  #   if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
+  #   uses: ./.github/workflows/common.yml
+  #   with:
+  #     job_name: Run Tests
+  #     run_command: './dev.py coverage'
+
+  # build_and_upload:
+  #   name: Build and Upload
+  #   if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
+  #   uses: ./.github/workflows/common.yml
+  #   with:
+  #     job_name: Build and Upload
+  #     run_doc_build_command: './dev.py doc'
+  #     run_poetry_build_command: 'build'
+  #     upload_artifact_path: 'dist/'

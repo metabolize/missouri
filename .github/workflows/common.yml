@@ -3,9 +3,6 @@ name: Reusable Python Job
 on:
   workflow_call:
     inputs:
-      job_name:
-        required: true
-        type: string
       python_version:
         required: false
         type: string
@@ -32,12 +29,13 @@ on:
         default: 'dist-artifacts'
 
 jobs:
-  execute:
-    name: ${{ inputs.job_name }}
+  prepare:
+    name: Prepare environment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Set up Python ${{ inputs.python_version }}
         uses: actions/setup-python@v5
         with:
@@ -46,15 +44,18 @@ jobs:
         uses: abatilo/actions-poetry@v4
         with:
           poetry-version: ${{ inputs.poetry_version }}
-      - uses: actions/cache@v3
-        name: Define a cache for the virtual environment
+
+      - name: Define a cache for the virtual environment
+        uses: actions/cache@v3
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ inputs.python_version }}-${{ hashFiles('poetry.lock') }}
           restore-keys: |
             venv-${{ runner.os }}-${{ inputs.python_version }}-
+
       - name: Create the in-project virtualenv
         run: test -d .venv || python -m venv .venv
+
       - name: Install dependencies
         run: |
           poetry --version
