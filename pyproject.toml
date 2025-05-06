@@ -21,7 +21,7 @@ python = ">= 3.8, < 4"
 simplejson = ">= 3, < 4"
 
 [tool.poetry.dev-dependencies]
-black = "23.3.0"
+black = "24.3.0"
 click = "8.1.8"
 coverage = "7.2.7"
 executor = "23.2"
