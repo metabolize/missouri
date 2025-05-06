@@ -1,6 +1,4 @@
 name: Prepare environment
-runs:
-  using: "composite"
 
 inputs:
   python_version:
@@ -9,6 +7,9 @@ inputs:
   poetry_version:
     required: false
     default: '1.2.2'
+
+runs:
+  using: "composite"
 
   steps:
     - name: Set up Python ${{ inputs.python_version }}
