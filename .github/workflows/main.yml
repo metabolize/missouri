@@ -20,7 +20,7 @@ jobs:
     - uses: ./.github/workflows/common
 
     - name: Check code format
-      run: ./dev.py black
+      run: ./dev.py black_check
 
   check_lint:
     name: Check lint
