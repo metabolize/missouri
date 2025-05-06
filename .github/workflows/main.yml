@@ -36,20 +36,41 @@ jobs:
     - name: Check code format
       run: ./dev.py lint
 
-  # run_tests:
-  #   name: Run Tests
-  #   if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
-  #   uses: ./.github/workflows/common.yml
-  #   with:
-  #     job_name: Run Tests
-  #     run_command: './dev.py coverage'
+  run_tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
 
-  # build_and_upload:
-  #   name: Build and Upload
-  #   if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
-  #   uses: ./.github/workflows/common.yml
-  #   with:
-  #     job_name: Build and Upload
-  #     run_doc_build_command: './dev.py doc'
-  #     run_poetry_build_command: 'build'
-  #     upload_artifact_path: 'dist/'
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - uses: ./.github/workflows/common
+
+    - name: Check code format
+      run: ./dev.py test
+
+  build_and_upload:
+    name: Build and upload
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - uses: ./.github/workflows/common
+
+    - name: Check that the build completes
+      if: always()
+      run: poetry build
+
+    - name: Upload distributable
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-artifacts
+        path: dist/
+
+    - name: Build the docs
+      run: ./dev.py doc

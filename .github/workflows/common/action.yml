@@ -1,10 +1,10 @@
 name: Prepare environment
 
 inputs:
-  python_version:
+  'python-version':
     required: false
     default: '3.9'
-  poetry_version:
+  'poetry-version':
     required: false
     default: '1.2.2'
 
@@ -12,23 +12,23 @@ runs:
   using: "composite"
 
   steps:
-    - name: Set up Python ${{ inputs.python_version }}
+    - name: Set up Python ${{ inputs.python-version }}
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ inputs.python_version }}
+        python-version: ${{ inputs.python-version }}
 
-    - name: Install Poetry ${{ inputs.poetry_version }}
+    - name: Install Poetry ${{ inputs.poetry-version }}
       uses: abatilo/actions-poetry@v4
       with:
-        poetry-version: ${{ inputs.poetry_version }}
+        poetry-version: ${{ inputs.poetry-version }}
 
     - name: Define a cache for the virtual environment
       uses: actions/cache@v3
       with:
         path: .venv
-        key: venv-${{ runner.os }}-${{ inputs.python_version }}-${{ hashFiles('poetry.lock') }}
+        key: venv-${{ runner.os }}-${{ inputs.python-version }}-${{ hashFiles('poetry.lock') }}
         restore-keys: |
-          venv-${{ runner.os }}-${{ inputs.python_version }}-
+          venv-${{ runner.os }}-${{ inputs.python-version }}-
 
     - name: Create the in-project virtualenv if it doesn't exist
       shell: bash
@@ -40,22 +40,3 @@ runs:
         poetry --version
         poetry install --no-ansi --no-interaction
         poetry show
-
-    # - name: Execute main task command
-    #   if: ${{ inputs.run_command }}
-    #   run: poetry run ${{ inputs.run_command }}
-
-    # - name: Run the doc build
-    #   if: ${{ inputs.run_doc_build_command }}
-    #   run: poetry run ${{ inputs.run_doc_build_command }}
-
-    # - name: Run Poetry build
-    #   if: ${{ inputs.run_poetry_build_command }}
-    #   run: poetry ${{ inputs.run_poetry_build_command }}
-
-    # - name: Upload distributable
-    #   if: ${{ inputs.upload_artifact_path }}
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: ${{ inputs.upload_artifact_name }}
-    #     path: ${{ inputs.upload_artifact_path }}
