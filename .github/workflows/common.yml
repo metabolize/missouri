@@ -1,4 +1,4 @@
-name: Reusable Python Job
+name: Common environment setup
 
 on:
   workflow_call:
@@ -29,13 +29,10 @@ on:
         default: 'dist-artifacts'
 
 jobs:
-  prepare:
+  execute:
     name: Prepare environment
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Set up Python ${{ inputs.python_version }}
         uses: actions/setup-python@v5
         with:
