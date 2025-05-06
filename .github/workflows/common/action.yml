@@ -21,9 +21,11 @@ runs:
           venv-${{ runner.os }}-${{ inputs.python_version }}-
 
     - name: Create the in-project virtualenv
+      shell: bash
       run: test -d .venv || python -m venv .venv
 
     - name: Install dependencies
+      shell: bash
       run: |
         poetry --version
         poetry install --no-ansi --no-interaction
