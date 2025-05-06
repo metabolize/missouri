@@ -1,0 +1,81 @@
+name: Reusable Python Job
+
+on:
+  workflow_call:
+    inputs:
+      job_name:
+        required: true
+        type: string
+      python_version:
+        required: false
+        type: string
+        default: '3.9'
+      poetry_version:
+        required: false
+        type: string
+        default: '1.2.2'
+      run_command: # For simple, single-line commands for format, lint, test
+        required: false
+        type: string
+      run_doc_build_command: # Command to build docs
+        required: false
+        type: string
+      run_poetry_build_command: # Command for poetry build itself (e.g., "build")
+        required: false
+        type: string
+      upload_artifact_path: # Path to upload, if any
+        required: false
+        type: string
+      upload_artifact_name:
+        required: false
+        type: string
+        default: 'dist-artifacts'
+
+jobs:
+  execute:
+    name: ${{ inputs.job_name }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python ${{ inputs.python_version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python_version }}
+      - name: Install Poetry ${{ inputs.poetry_version }}
+        uses: abatilo/actions-poetry@v4
+        with:
+          poetry-version: ${{ inputs.poetry_version }}
+      - uses: actions/cache@v3
+        name: Define a cache for the virtual environment
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ inputs.python_version }}-${{ hashFiles('poetry.lock') }}
+          restore-keys: |
+            venv-${{ runner.os }}-${{ inputs.python_version }}-
+      - name: Create the in-project virtualenv
+        run: test -d .venv || python -m venv .venv
+      - name: Install dependencies
+        run: |
+          poetry --version
+          poetry install --no-ansi --no-interaction
+          poetry show
+
+      - name: Execute main task command
+        if: ${{ inputs.run_command }}
+        run: poetry run ${{ inputs.run_command }}
+
+      - name: Run the doc build
+        if: ${{ inputs.run_doc_build_command }}
+        run: poetry run ${{ inputs.run_doc_build_command }}
+
+      - name: Run Poetry build
+        if: ${{ inputs.run_poetry_build_command }}
+        run: poetry ${{ inputs.run_poetry_build_command }}
+
+      - name: Upload distributable
+        if: ${{ inputs.upload_artifact_path }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.upload_artifact_name }}
+          path: ${{ inputs.upload_artifact_path }}
