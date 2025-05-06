@@ -20,16 +20,21 @@ jobs:
     - uses: ./.github/workflows/common
 
     - name: Check code format
+      run: ./dev.py black
+
+  check_lint:
+    name: Check lint
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - uses: ./.github/workflows/common
+
+    - name: Check code format
       run: ./dev.py lint
-
-
-  # check_lint:
-  #   name: Check Lint
-  #   if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
-  #   uses: ./.github/workflows/common.yml
-  #   with:
-  #     job_name: Check Lint
-  #     run_command: './dev.py lint'
 
   # run_tests:
   #   name: Run Tests
