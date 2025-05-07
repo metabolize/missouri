@@ -8,6 +8,9 @@ from .numpylib import decode_numpy as _decode_numpy, encode_numpy as _encode_num
 if t.TYPE_CHECKING:  # pragma: no cover
     import numpy as np
 
+# TODO: Refine this type.
+CoderMethod = t.Callable[[t.Any], t.Any]
+
 
 class MethodListCaller:
     """
@@ -16,7 +19,9 @@ class MethodListCaller:
     will then be called in order until one of them succeeds.
     """
 
-    def register(self, method, index=-1):
+    method_list: t.List[CoderMethod]
+
+    def register(self, method: CoderMethod, index: int = -1) -> None:
         if not hasattr(self, "method_list"):
             self.clear()
         if index == -1:

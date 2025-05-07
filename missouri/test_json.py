@@ -2,7 +2,9 @@
 # https://github.com/metabolize-forks/baiji-serialization/tree/8b77f19685555e1bab03e75a433d00ce6fa4bea5
 # Apache 2.0
 
+import typing as t
 from missouri import json
+import py
 import pytest
 
 
@@ -37,7 +39,7 @@ def test_json_dump_stringio() -> None:
     assert io.getvalue() == r'["streaming API"]'
 
 
-def test_json_dump_file(tmpdir) -> None:
+def test_json_dump_file(tmpdir: py.path.local) -> None:
     path = str(tmpdir / "test_json_dump_file.json")
     with open(path, "w") as f:
         json.dump(["File Test"], f)
@@ -45,7 +47,7 @@ def test_json_dump_file(tmpdir) -> None:
         assert f.read() == r'["File Test"]'
 
 
-def test_json_dump_path(tmpdir) -> None:
+def test_json_dump_path(tmpdir: py.path.local) -> None:
     path = str(tmpdir / "test_json_dump_path.json")
     json.dump(["File Test"], path)
     with open(path, "r") as f:
@@ -67,7 +69,7 @@ def test_json_load_stringio() -> None:
     assert json.load(io) == ["streaming API"]
 
 
-def test_json_load_file(tmpdir) -> None:
+def test_json_load_file(tmpdir: py.path.local) -> None:
     path = str(tmpdir / "test_json_load_file.json")
     with open(path, "w") as f:
         f.write(r'["File Test"]')
@@ -75,7 +77,7 @@ def test_json_load_file(tmpdir) -> None:
         assert json.load(f) == ["File Test"]
 
 
-def test_json_load_path(tmpdir) -> None:
+def test_json_load_path(tmpdir: py.path.local) -> None:
     path = str(tmpdir / "test_json_load_path.json")
     with open(path, "w") as f:
         f.write(r'["File Test"]')
@@ -151,14 +153,14 @@ def test_json_dump_np_scalars() -> None:
     assert json.dumps(np.short(3)) == "3"
 
 
-def test_json_dump_custom_encoder():
+def test_json_dump_custom_encoder() -> None:
     from missouri.coding import JSONEncoder
 
     class MyClass:
         pass
 
     class MyEncoder(JSONEncoder):
-        def encode(self, obj):
+        def encode(self, obj: t.Any) -> t.Any:
             if isinstance(obj, MyClass):
                 return {"oh yes": "it's my class"}
             else:
@@ -169,7 +171,7 @@ def test_json_dump_custom_encoder():
     )
 
 
-def test_json_dump_dict_kwarg_raises_expected_error(tmpdir):
+def test_json_dump_dict_kwarg_raises_expected_error(tmpdir: py.path.local) -> None:
     with pytest.raises(
         ValueError,
         match=r"Instead of explicitly setting default, subclass missouri.coding.JSONEncoder and pass it as encoder",
@@ -177,14 +179,14 @@ def test_json_dump_dict_kwarg_raises_expected_error(tmpdir):
         json.dump({"foo": 123}, str(tmpdir / "test_example.json"), default=dict())
 
 
-def test_json_load_custom_decoder():
+def test_json_load_custom_decoder() -> None:
     from missouri.coding import JSONDecoder
 
     class MyClass:
         pass
 
     class MyDecoder(JSONDecoder):
-        def decode(self, obj):
+        def decode(self, obj: t.Any) -> t.Any:
             if list(obj.keys()) == ["oh yes"]:
                 return MyClass()
             else:
@@ -195,7 +197,7 @@ def test_json_load_custom_decoder():
     )
 
 
-def test_json_load_object_hook_kwarg_raises_expected_error():
+def test_json_load_object_hook_kwarg_raises_expected_error() -> None:
     with pytest.raises(
         ValueError,
         match=r"Instead of explicitly setting object_hook, subclass missouri.coding.JSONDecoder and pass it as decoder",
@@ -203,7 +205,7 @@ def test_json_load_object_hook_kwarg_raises_expected_error():
         json.loads('{"foo":"data"}', object_hook=dict())
 
 
-def test_json_dump_unknown_object_raises_expected():
+def test_json_dump_unknown_object_raises_expected() -> None:
     class MyClass:
         pass
 
@@ -214,7 +216,9 @@ def test_json_dump_unknown_object_raises_expected():
         json.dumps(MyClass())
 
 
-def test_json_dump_does_not_raise_importerror_when_numpy_is_not_installed(monkeypatch):
+def test_json_dump_does_not_raise_importerror_when_numpy_is_not_installed(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     import sys
 
     monkeypatch.setitem(sys.modules, "numpy", None)
@@ -225,7 +229,9 @@ def test_json_dump_does_not_raise_importerror_when_numpy_is_not_installed(monkey
         json.dumps(complex(1, 3))
 
 
-def test_json_load_raises_expected_error_when_numpy_is_not_installed(monkeypatch):
+def test_json_load_raises_expected_error_when_numpy_is_not_installed(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     import sys
 
     monkeypatch.setitem(sys.modules, "numpy", None)
@@ -238,8 +244,8 @@ def test_json_load_raises_expected_error_when_numpy_is_not_installed(monkeypatch
         )
 
 
-def test_json_dump_raises_expected_error_with_non_file_object():
+def test_json_dump_raises_expected_error_with_non_file_object() -> None:
     with pytest.raises(
         ValueError, match=r"Object does not appear to be a path or a file-like object"
     ):
-        json.dump({"some": "data"}, dict())
+        json.dump({"some": "data"}, dict())  # type: ignore[arg-type]
