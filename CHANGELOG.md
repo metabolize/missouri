@@ -1,6 +1,17 @@
 Changelog
 =========
 
+## 1.0.0
+
+### BREAKING CHANGES
+
+- Require Python 3.9+
+
+# Bug fixes
+
+- Fix no such attribute `np.bool8`.
+
+
 ## 0.3.0
 
 - Support reading and writing from objects which support `read()` and
