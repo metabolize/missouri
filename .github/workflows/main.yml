@@ -33,7 +33,7 @@ jobs:
 
     - uses: ./.github/workflows/common
 
-    - name: Check code format
+    - name: Check types
       run: ./dev.py check-types
 
   check_lint:
@@ -47,7 +47,7 @@ jobs:
 
     - uses: ./.github/workflows/common
 
-    - name: Check code format
+    - name: Check lint
       run: ./dev.py lint
 
   run_tests:
@@ -61,7 +61,7 @@ jobs:
 
     - uses: ./.github/workflows/common
 
-    - name: Check code format
+    - name: Run tests
       run: ./dev.py test
 
   build_and_upload:
@@ -75,7 +75,7 @@ jobs:
 
     - uses: ./.github/workflows/common
 
-    - name: Check that the build completes
+    - name: Build the package
       run: poetry build
 
     - name: Upload distributable
