@@ -145,6 +145,7 @@ def test_json_dump_ndarray_tricks_as_primitives() -> None:
     )
 
 
+@pytest.mark.filterwarnings("ignore::DeprecationWarning")
 def test_json_dump_np_scalars() -> None:
     import numpy as np
 
@@ -212,6 +213,7 @@ def test_json_load_object_hook_kwarg_raises_expected_error() -> None:
         json.loads('{"foo":"data"}', object_hook=dict())
 
 
+@pytest.mark.filterwarnings("ignore::DeprecationWarning")
 def test_json_dump_unknown_object_raises_expected() -> None:
     class MyClass:
         pass
