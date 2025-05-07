@@ -1,5 +1,9 @@
 name: Generate coverage report
-on: workflow_dispatch
+# on: workflow_dispatch
+on:
+  push:
+    branches:
+      - '**'
 
 jobs:
   generate_coverage_report:
