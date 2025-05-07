@@ -24,7 +24,9 @@ def encode_numpy(obj: t.Any, as_primitives: bool) -> t.Any:
                 "dtype": obj.dtype.name,
                 "shape": obj.shape,
             }
-    elif isinstance(obj, (np.bool8, np.bool_)):
+    elif hasattr(np, "bool8") and isinstance(obj, getattr(np, "bool8")):
+        return bool(obj)
+    elif isinstance(obj, np.bool_):
         return bool(obj)
     elif isinstance(
         obj,
