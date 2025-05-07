@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "missouri"
-version = "0.3.0"
+version = "1.0.0"
 description = "Read and write JSON in one line"
 authors = ["Paul Melnikow <github@paulmelnikow.com>", "Body Labs, Metabolize, and other contributors"]
 license = "Apache-2.0"
@@ -8,7 +8,7 @@ include = ["CHANGELOG.md"]
 exclude = ["*/test_*.py"]
 repository = "https://github.com/metabolize/missouri"
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Topic :: Utilities",
