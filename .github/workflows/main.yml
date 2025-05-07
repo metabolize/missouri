@@ -51,7 +51,7 @@ jobs:
       run: ./dev.py lint
 
   run_tests:
-    name: Run tests
+    name: Run tests and check coverage
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || (github.event_name == 'schedule' && github.ref == 'refs/heads/main')
 
@@ -61,8 +61,8 @@ jobs:
 
     - uses: ./.github/workflows/common
 
-    - name: Run tests
-      run: ./dev.py test
+    - name: Run tests and check coverage
+      run: ./dev.py coverage
 
   build_and_upload:
     name: Build and upload
