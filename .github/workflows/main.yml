@@ -62,15 +62,14 @@ jobs:
     - uses: ./.github/workflows/common
 
     - name: Check that the build completes
-      if: always()
       run: poetry build
 
     - name: Upload distributable
-      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: dist-artifacts
         path: dist/
 
     - name: Build the docs
+      if: always()
       run: ./dev.py doc
