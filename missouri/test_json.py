@@ -149,6 +149,11 @@ def test_json_dump_np_scalars() -> None:
     import numpy as np
 
     assert json.dumps(np.bool_(True)) == "true"
+    assert json.dumps(np.half(3)) == "3.0"
+    assert json.dumps(np.half(3)) == "3.0"
+    assert json.dumps(np.single(3)) == "3.0"
+    assert json.dumps(np.double(3)) == "3.0"
+    assert json.dumps(np.float_(3)) == "3.0"
     assert json.dumps(np.longfloat(3.14)) == "3.14"
     assert json.dumps(np.float64(3.14)) == "3.14"
     assert json.dumps(np.short(3)) == "3"
