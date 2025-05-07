@@ -148,6 +148,7 @@ def test_json_dump_ndarray_tricks_as_primitives() -> None:
 def test_json_dump_np_scalars() -> None:
     import numpy as np
 
+    # Some of the code paths for these assertions are architecture-dependent.
     assert json.dumps(np.bool_(True)) == "true"
     assert json.dumps(np.half(3)) == "3.0"
     assert json.dumps(np.half(3)) == "3.0"
