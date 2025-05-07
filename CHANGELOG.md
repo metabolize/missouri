@@ -7,7 +7,7 @@ Changelog
 
 - Require Python 3.9+
 
-# Bug fixes
+### Bug fixes
 
 - Fix no such attribute `np.bool8`.
 
