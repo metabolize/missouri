@@ -710,11 +710,11 @@ python-versions = ">=3.8"
 
 [[package]]
 name = "types-simplejson"
-version = "3.19.0.2"
+version = "3.20.0.20250326"
 description = "Typing stubs for simplejson"
 category = "dev"
 optional = false
-python-versions = "*"
+python-versions = ">=3.9"
 
 [[package]]
 name = "typing-extensions"
@@ -765,7 +765,7 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">= 3.9, < 4"
-content-hash = "e813fa0c33106aa17ae48e8cbab75ff0bbbaf9ab4e0e5f2613d3172ef7a02e47"
+content-hash = "5de30c81bedb3981f46a80972e928025cccafd43e71c07187b45387e1ca9f909"
 
 [metadata.files]
 alabaster = [
@@ -1476,8 +1476,8 @@ tomli = [
     {file = "tomli-2.2.1.tar.gz", hash = "sha256:cd45e1dc79c835ce60f7404ec8119f2eb06d38b1deba146f07ced3bbc44505ff"},
 ]
 types-simplejson = [
-    {file = "types-simplejson-3.19.0.2.tar.gz", hash = "sha256:ebc81f886f89d99d6b80c726518aa2228bc77c26438f18fd81455e4f79f8ee1b"},
-    {file = "types_simplejson-3.19.0.2-py3-none-any.whl", hash = "sha256:8ba093dc7884f59b3e62aed217144085e675a269debc32678fd80e0b43b2b86f"},
+    {file = "types_simplejson-3.20.0.20250326-py3-none-any.whl", hash = "sha256:db1ddea7b8f7623b27a137578f22fc6c618db8c83ccfb1828ca0d2f0ec11efa7"},
+    {file = "types_simplejson-3.20.0.20250326.tar.gz", hash = "sha256:b2689bc91e0e672d7a5a947b4cb546b76ae7ddc2899c6678e72a10bf96cd97d2"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.13.2-py3-none-any.whl", hash = "sha256:a439e7c04b49fec3e5d3e2beaa21755cadbbdc391694e28ccdd36ca4a1408f8c"},
