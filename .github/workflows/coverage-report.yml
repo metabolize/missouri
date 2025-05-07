@@ -22,7 +22,7 @@ jobs:
     - name: Generate coverage report
       if: always()
       run: |
-        ./dev.py coverage-report
+        poetry run coverage html --fail-under=0
         zip -r htmlcov.zip htmlcov
 
     - name: Upload coverage report
