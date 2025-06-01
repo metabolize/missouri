@@ -34,7 +34,7 @@ pytest = "8.3.5"
 pytest-cov = "6.1.1"
 pytest-mock = "3.14.0"
 Sphinx = "7.4.7"
-sphinxcontrib-apidoc = "0.5.0"
+sphinxcontrib-apidoc = "0.6.0"
 types-simplejson = "3.19.0.2"
 
 [build-system]
